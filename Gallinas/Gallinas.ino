@@ -23,16 +23,16 @@
 */
 
 #define MS_INTERVALO_LED_TEST            500 //Function LedTest()
-#define LED_TEST                         0
+#define LED_TEST                         13
 #define CONFIG_LED_TEST                  pinMode(LED_TEST, OUTPUT)
 #define ACTUALIZAR_LED_TEST(x)           digitalWrite(LED_TEST, x)
 
-#define PIN_MOTOR                        4
+#define PIN_MOTOR                        11
 #define CONFIG_PIN_MOTOR                 pinMode(PIN_MOTOR, OUTPUT)
 #define MOTOR_ENCENDIDO                  analogWrite(PIN_MOTOR, 140)
 #define MOTOR_APAGADO                     analogWrite(PIN_MOTOR, 0)
 
-#define PIN_LDR                          A3
+#define PIN_LDR                          A0
 #define CONFIG_PIN_LDR                   pinMode(PIN_LDR, INPUT)
 #define LEER_LDR                         analogRead(PIN_LDR)
 
@@ -44,7 +44,9 @@
 
 #define TPO_ENCENDIDO                    3500
 #define TPO_APAGADO                      180000
-#define TPO_TEST                         1500
+#define TPO_TEST                         1500  // tiempo para testeo de funcionamiento del motor
+
+//Variables Globales
 
 int lectura_ldr;
 int pasada = 0;
@@ -87,6 +89,7 @@ void Leer_LDR()
 {
   // static unsigned long Millis_ant_espera = 0;
   lectura_ldr = LEER_LDR;
+  
  
   if(lectura_ldr < 600) return;
   if(pasada > estacion) return;

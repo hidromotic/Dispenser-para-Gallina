@@ -66,9 +66,9 @@ void setup() {
 
 void loop()
  {
-  LedTest();
-  RecepcionSerie();
+  LedTest();  
   Leer_LDR();
+  RecepcionSerie();
   Ctrl_Motor();
  }
 
@@ -94,7 +94,7 @@ void Leer_LDR()
   if(lectura_ldr < 600) return;
   if(pasada > estacion) return;
   if(Tiempo_Motor != 0) return;
-  if(Millis_ant_espera - millis() < TPO_APAGADO) return;
+  if(millis() - Millis_ant_espera < TPO_APAGADO) return;
    Tiempo_Motor = 3500;
    pasada++;
 }
@@ -106,7 +106,8 @@ void RecepcionSerie()
   //Si hay datos, leer el dato y procesarlo
   byte dato;
  
-  if (!Serial.available()) return;
+  if(!Serial.available()) return;
+  if(Tiempo_Motor != 0) return;
   if(dato !='t' || dato != 'T') return;
     Tiempo_Motor = 1500;    
   }

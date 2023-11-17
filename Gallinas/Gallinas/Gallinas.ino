@@ -60,7 +60,8 @@ void setup() {
   CONFIG_LED_TEST; 
   CONFIG_PIN_MOTOR;
   CONFIG_PIN_LDR;
-  if(LEER_PIN_ESTACION) estacion ? VERANO : INVIERNO;  
+  //if(LEER_PIN_ESTACION) estacion ? VERANO : INVIERNO;  
+  estacion = LEER_PIN_ESTACION ? VERANO : INVIERNO; 
 
   ACTUALIZAR_LED_TEST(0); 
   MOTOR_APAGADO;
@@ -118,9 +119,26 @@ void RecepcionSerie()
   }
 
 void Ctrl_Motor(){
-  if(Tiempo_Motor == 0) MOTOR_APAGADO;
-     Tiempo_Motor = Tiempo_Motor--;
-     Millis_apagado_ant = millis();
-     MOTOR_ENCENDIDO;
-     Serial.println("entro en motor 3");  
+  static unsigned long millis_ant=0;
+  static unsigned int Tiempo_motor_ant=0;
+  
+  if(!Tiempo_Motor) return;
+  
+  if(millis() == millis_ant) return;
+  millis_ant=millis();
+
+  Tiempo_Motor--;
+
+  //DETECTA EL EVENTO
+  if(Tiempo_Motor && !Tiempo_motor_ant) MOTOR_ENCENDIDO;
+  if(!Tiempo_Motor) MOTOR_APAGADO;  
+
+  Tiempo_motor_ant=Tiempo_Motor;
+  /*
+ if(Tiempo_Motor == 0) MOTOR_APAGADO;
+ Tiempo_Motor = Tiempo_Motor--;
+ Millis_apagado_ant = millis();
+ MOTOR_ENCENDIDO;
+ Serial.println("entro en motor 3");  
+ */
 }
